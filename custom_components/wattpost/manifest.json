@@ -1,0 +1,13 @@
+{
+  "domain": "wattpost",
+  "name": "WattPost Cloud",
+  "version": "0.1.0",
+  "codeowners": ["@ritualnorth"],
+  "config_flow": true,
+  "documentation": "https://github.com/ritualnorth/wattpost-homeassistant",
+  "issue_tracker": "https://github.com/ritualnorth/wattpost-homeassistant/issues",
+  "iot_class": "cloud_polling",
+  "integration_type": "device",
+  "requirements": [],
+  "dependencies": []
+}

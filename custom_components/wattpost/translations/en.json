@@ -1,0 +1,54 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to WattPost Cloud",
+        "description": "Paste an API token from [WattPost → Account → API keys]({docs}). Self-hosters can override the base URL.",
+        "data": {
+          "token":    "API token",
+          "base_url": "Base URL (optional)"
+        }
+      },
+      "pick_site": {
+        "title": "Pick a site",
+        "description": "Choose which paired appliance this Home Assistant device represents. To monitor more than one site, re-run the integration setup once per site.",
+        "data": {
+          "site_id": "Site"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth":     "The token was rejected. Mint a fresh one at WattPost → Account → API keys.",
+      "cannot_connect":   "Could not reach WattPost Cloud. Check the base URL and your network.",
+      "no_sites":         "Your account has no paired appliances yet. Pair one in the WattPost dashboard first.",
+      "unknown":          "Unexpected error. Check the Home Assistant log for details."
+    },
+    "abort": {
+      "already_configured": "This site is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "WattPost options",
+        "data": {
+          "scan_interval_seconds": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "soc":             { "name": "State of charge" },
+      "net_power":       { "name": "Net power" },
+      "voltage":         { "name": "Battery voltage" },
+      "current":         { "name": "Battery current" },
+      "pv_today":        { "name": "Solar today" },
+      "load_today":      { "name": "Load today" },
+      "bank_net_today":  { "name": "Bank net today" },
+      "remaining_ah":    { "name": "Remaining capacity" },
+      "time_to_go":      { "name": "Time to empty" },
+      "temperature":     { "name": "Battery temperature" }
+    }
+  }
+}
