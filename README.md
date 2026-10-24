@@ -4,7 +4,27 @@ Surfaces your WattPost-paired sites in Home Assistant by polling the
 public REST API at `wattpost.cloud`. Cloud-mode by design — Home
 Assistant never has to reach your appliance directly, so a remote
 cabin, off-grid van, or boat on poor cellular still works as long as
-its heartbeats are making it up to the cloud.
+the appliance is uploading to the cloud.
+
+## Which route should I use?
+
+There are two, and they are not alternatives to stack:
+
+**Same network as the appliance → use MQTT, not this integration.**
+The appliance has an MQTT exporter that publishes Home Assistant
+discovery messages. Turn it on (Settings → Integrations → MQTT, or
+`exporters.mqtt` with `ha_discovery: true` in `config.yaml`), point it at
+your Mosquitto broker, and Home Assistant's built-in MQTT integration
+creates every sensor on its own. That is local push: real-time,
+no cloud account, no API quota, and it keeps working with the internet
+down. Home Assistant classifies it as `local_push`; this integration is
+`cloud_polling`.
+
+**Home Assistant is somewhere else → use this integration.** A cabin, van
+or boat whose appliance you can't reach from home. It reads the data the
+appliance last uploaded to wattpost.cloud, so values are as fresh as the
+appliance's last upload (about a minute on a good link) and the "Online"
+sensor tells you when it has gone quiet.
 
 ## What you get
 
@@ -63,7 +83,7 @@ slot into the Energy dashboard out of the box.
 ## How it works
 
 ```
-   ┌────────────┐  heartbeats (BLE / Modbus → JSON, ~60s)    ┌──────────────┐
+   ┌────────────┐  uploads (BLE / Modbus → JSON, ~60s)       ┌──────────────┐
    │ Appliance  │ ──────────────────────────────────────────► │ wattpost.cloud │
    │ at the     │                                              │  REST API    │
    │ cabin/van  │                                              └──────┬───────┘
@@ -76,9 +96,9 @@ slot into the Energy dashboard out of the box.
                                                               └──────────────┘
 ```
 
-The appliance pushes opportunistic heartbeats up to wattpost.cloud
-whenever it has any internet. Home Assistant (running on the
-customer's home internet) pulls from the cloud. There is no direct
+The appliance pushes its data up to wattpost.cloud whenever it has any
+internet, and keeps a backlog while it doesn't. Home Assistant (running
+on the customer's home internet) pulls from the cloud. There is no direct
 path between HA and the appliance — which is exactly the point.
 
 ## Privacy + costs
