@@ -90,6 +90,12 @@ class WattPostCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                             "site not found (the appliance may have been "
                             "deleted from the account)"
                         )
+                    if resp.status == 429:
+                        raise UpdateFailed(
+                            "monthly WattPost API quota used up (10,000 calls per "
+                            "token); it resets on the 1st. Raise the polling "
+                            "interval in the integration's options."
+                        )
                     if resp.status >= 400:
                         raise UpdateFailed(
                             f"WattPost API returned {resp.status}: {body[:200]}"

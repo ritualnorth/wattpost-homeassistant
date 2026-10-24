@@ -53,7 +53,7 @@ class WattPostOnlineSensor(
             "identifiers":  {(DOMAIN, str(self.coordinator.site_id))},
             "manufacturer": "WattPost",
             "name":         data.get("label") or f"WattPost {slug}",
-            "model":        f"Mode: {(data.get('mode') or 'home').title()}",
+            "model":        "WattPost appliance",
             "configuration_url": f"https://wattpost.cloud/app/site/{self.coordinator.site_id}",
         }
 
@@ -68,7 +68,5 @@ class WattPostOnlineSensor(
         data = self.coordinator.data or {}
         return {
             "last_seen":  data.get("last_seen"),
-            "mode":       data.get("mode"),
             "slug":       data.get("slug"),
-            "tunnel_url": data.get("tunnel_url"),
         }

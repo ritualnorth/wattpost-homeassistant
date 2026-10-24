@@ -49,7 +49,9 @@ slot into the Energy dashboard out of the box.
 
 - Home Assistant 2024.4 or newer
 - A WattPost account with at least one paired appliance
-- An API token, minted at **WattPost → Account → API keys**
+- An API token, minted at **WattPost → Account → API keys**. API tokens
+  need a paid plan (Pro or Installer); the free Hobby plan can't mint
+  them.
 
 ## Installation
 
@@ -75,10 +77,10 @@ slot into the Energy dashboard out of the box.
    your wattpost-cloud install URL.)
 2. Pick which site this device represents. Each WattPost site = one HA
    device. Run setup again per site if you have more than one.
-3. Optionally tune the polling interval under **Options** (default 60
-   seconds, range 30 – 900). Heartbeats arrive at the cloud roughly
-   every minute, so polling faster than that won't reveal new data — it
-   just chews API quota.
+3. Optionally tune the polling interval under **Options** (default 300
+   seconds, range 60 – 900). The appliance uploads every few minutes, so
+   polling faster than that won't reveal new data — it just chews API
+   quota (see below).
 
 ## How it works
 
@@ -106,10 +108,13 @@ path between HA and the appliance — which is exactly the point.
 - Reads only. The token has read-only scope on your sites.
 - All traffic between HA and `wattpost.cloud` is HTTPS.
 - API quota is per-token, monthly. Watch `X-RateLimit-Remaining` in
-  the HA debug logs if you want to see how much is left. Default
-  polling at 60s = ~43,000 calls/month per site, well above the
-  default 10,000 quota — bump scan interval to ≥ 240s for a single
-  site, or split across multiple tokens.
+  the HA debug logs if you want to see how much is left. The default
+  quota is 10,000 calls a month, which is one call every ~4.3 minutes.
+  The default polling interval (300 s, ~8,600 calls/month) fits one
+  site; two sites on one token need ≥ 600 s each, or a token per site.
+  Polling at 60 s would use ~43,000 calls a month and run dry in about
+  a week, after which the integration reports the quota error until
+  the 1st.
 
 ## Troubleshooting
 
