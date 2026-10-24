@@ -7,8 +7,11 @@ DOMAIN = "wattpost"
 MANUFACTURER = "WattPost"
 
 DEFAULT_BASE_URL = "https://wattpost.cloud"
-DEFAULT_SCAN_INTERVAL = timedelta(seconds=60)
-MIN_SCAN_INTERVAL = timedelta(seconds=30)
+# The cloud's API quota is 10,000 calls per token per month (one call per ~4.3
+# minutes), and the appliance only uploads every few minutes, so polling faster
+# than this shows nothing new and runs the quota out part-way through the month.
+DEFAULT_SCAN_INTERVAL = timedelta(seconds=300)
+MIN_SCAN_INTERVAL = timedelta(seconds=60)
 MAX_SCAN_INTERVAL = timedelta(seconds=900)
 
 CONF_BASE_URL = "base_url"

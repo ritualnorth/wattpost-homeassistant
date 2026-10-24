@@ -9,7 +9,7 @@ Payload shape (from GET /api/v1/sites/{id}):
 
     {
       "id": 12, "label": "Garage Stack", "slug": "wp-xxxx",
-      "mode": "cabin", "online": true,
+      "online": true,
       "last_seen": "...",
       "latest": {
         "received_at": "...",
@@ -193,7 +193,7 @@ class WattPostSensor(CoordinatorEntity[WattPostCoordinator], SensorEntity):
             "identifiers":  {(DOMAIN, str(self.coordinator.site_id))},
             "manufacturer": "WattPost",
             "name":         data.get("label") or f"WattPost {slug}",
-            "model":        f"Mode: {(data.get('mode') or 'home').title()}",
+            "model":        "WattPost appliance",
             "configuration_url": f"https://wattpost.cloud/app/site/{self.coordinator.site_id}",
         }
 
